@@ -6,6 +6,10 @@ Goal:
 scrape summary information from linkedin people search result pages
 
 
+Output:
+csv file in current directory saved from a pandas dataframe
+
+
 Method:
 First, modify the script to provide 3 things: login id, password, and search word
 
@@ -26,10 +30,6 @@ We want to grab people and then look for 5 pieces of information by inspecting t
 Define the number of pages to crawl (we want to be safe with our limits)
 
 After crawling, convert the lists of results into a pandas dataframe and output it to a csv
-
-
-Output:
-csv file in current directory saved from a pandas dataframe
 
 """
 
