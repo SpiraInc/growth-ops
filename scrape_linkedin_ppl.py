@@ -156,6 +156,8 @@ try:
         # loop through each search result profile
         for profile in range(len(srch_div)):
 
+            driver.execute_script("window.scrollTo(0,"+str(profile * 75)+");")
+
             # add full name
             a = srch_div[profile].findAll('span', {'class':'actor-name'})[0].text
             name.append(a)
