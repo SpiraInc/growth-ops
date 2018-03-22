@@ -117,7 +117,6 @@ search_item = input('What word should be searched: ')
 srch_box = driver.find_element_by_tag_name("input")
 srch_box.send_keys(search_item)
 srch_box.send_keys(Keys.RETURN)
-print("Entering search item and hit enter 'key'")
 print_sep()
 
 # select the people's button because that's what we want, a list of people
@@ -135,7 +134,7 @@ enter in whatever scraping that needs done here now
 
 # initiate count to loop through search results page
 page_count = 0
-page_limit_set = 10
+page_limit_set = 200
 
 try:
     # loop through each page until the page page limit set
@@ -216,10 +215,11 @@ try:
         print("hit next")
         print_sep()
 
+    print("Page number: ", page_count)
+    print("Profiles: ", len(name))
+
 except:
-    # combine the separate lists into a pandas dataframe
-    result_set = pd.DataFrame(np.column_stack([name, job_and_company, degree_sep, location, prof_url, quick_summary]),
-                                columns = ["Name", "Job_And_Company", "Degree_Of_Separation", "Location", "Professional_URL", "Quick_Summary"])
+    print("Reached end of search pages")
 
 # combine the separate lists into a pandas dataframe
 result_set = pd.DataFrame(np.column_stack([name, job_and_company, degree_sep, location, prof_url, quick_summary]),
