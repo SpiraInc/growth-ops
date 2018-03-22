@@ -121,9 +121,9 @@ print("Entering search item and hit enter 'key'")
 print_sep()
 
 # select the people's button because that's what we want, a list of people
-driver.find_element_by_xpath('//button[@data-vertical="PEOPLE"]').click()
-print("Switching to People section")
-print_sep()
+# driver.find_element_by_xpath('//button[@data-vertical="PEOPLE"]').click()
+# print("Switching to People section")
+# print_sep()
 
 """
 enter in whatever scraping that needs done here now
@@ -137,90 +137,96 @@ enter in whatever scraping that needs done here now
 page_count = 0
 page_limit_set = 10
 
-# loop through each page until the page page limit set
-while page_count < page_limit_set:
+try:
+    # loop through each page until the page page limit set
+    while page_count < page_limit_set:
 
-    # scroll down to bottom of the page (because 'next button' won't work otherwise)
-    driver.execute_script("window.scrollTo(0, document.body.scrollHeight);")
-    print("scrolled a little to the bottom")
-    print_sep()
+        # scroll down to bottom of the page (because 'next button' won't work otherwise)
+        driver.execute_script("window.scrollTo(0, document.body.scrollHeight);")
+        print("scrolled a little to the bottom")
+        print_sep()
 
-    # get the page source in HTML for the current page and make a bs4 object
-    html = driver.page_source
-    time.sleep(1)
-    bs = BeautifulSoup(html, "html.parser")
-    srch_div = bs.findAll('div', {'class':'search-result__info pt3 pb4 ph0'})
-    print("pull html code from source")
-    print_sep()
+        # get the page source in HTML for the current page and make a bs4 object
+        html = driver.page_source
+        time.sleep(1)
+        bs = BeautifulSoup(html, "html.parser")
+        srch_div = bs.findAll('div', {'class':'search-result__info pt3 pb4 ph0'})
+        print("pull html code from source")
+        print_sep()
 
-    # loop through each search result profile
-    for profile in range(len(srch_div)):
+        # loop through each search result profile
+        for profile in range(len(srch_div)):
 
-        # add full name
-        a = srch_div[profile].findAll('span', {'class':'actor-name'})[0].text
-        name.append(a)
-        print("name: ", a)
+            # add full name
+            a = srch_div[profile].findAll('span', {'class':'actor-name'})[0].text
+            name.append(a)
+            print("name: ", a)
 
-        # add job title and company
-        a = srch_div[profile].findAll('p', {'class':'subline-level-1 Sans-15px-black-85% search-result__truncate'})[0].text
-        a = re.sub("\n", "", a)
-        a = re.sub("  ", "", a)
-        job_and_company.append(a)
-        print("job title + company: ", a)
-
-        # add degree of separation
-        if len(srch_div[profile].findAll('span', {'class':'visually-hidden'})[0].text) > 0:
-            a = srch_div[profile].findAll('span', {'class':'visually-hidden'})[0].text
-            degree_sep.append(a)
-            print("degree of sep: ", a)
-
-        # if degree of separation summary is not shown, return 'not available'
-        else:
-            a = "not available"
-            degree_sep.append(a)
-            print("degree of sep: ", a)
-
-        # quick search result summary
-        if len(srch_div[profile].findAll('p', {'class':'search-result__snippets mt2 Sans-13px-black-55% ember-view'})) > 0:
-            a = srch_div[profile].findAll('p', {'class':'search-result__snippets mt2 Sans-13px-black-55% ember-view'})[0].text
+            # add job title and company
+            a = srch_div[profile].findAll('p', {'class':'subline-level-1 Sans-15px-black-85% search-result__truncate'})[0].text
             a = re.sub("\n", "", a)
             a = re.sub("  ", "", a)
-            quick_summary.append(a)
-            print("quick summary: ", a)
+            job_and_company.append(a)
+            print("job title + company: ", a)
 
-        # if quick result summary is not shown, return 'not available'
-        else:
-            a = "not available"
-            quick_summary.append(a)
-            print("quick summary: ", a)
+            # add degree of separation
+            if len(srch_div[profile].findAll('span', {'class':'visually-hidden'})[0].text) > 0:
+                a = srch_div[profile].findAll('span', {'class':'visually-hidden'})[0].text
+                degree_sep.append(a)
+                print("degree of sep: ", a)
 
-        # add current location
-        a = srch_div[profile].findAll('p', {'class':'subline-level-2 Sans-13px-black-55% search-result__truncate'})[0].text
-        a = re.sub("\n", "", a)
-        a = re.sub("  ", "", a)
-        location.append(a)
-        print("current location: ", a)
+            # if degree of separation summary is not shown, return 'not available'
+            else:
+                a = "not available"
+                degree_sep.append(a)
+                print("degree of sep: ", a)
 
-        # add linkedin profile url
-        sublink = srch_div[profile].findAll('a')[0]['href']
-        a = "www.linkedin.com" + sublink
-        prof_url.append(a)
-        print("linkedin profile link: ", a)
-        print_sep_short()
+            # quick search result summary
+            if len(srch_div[profile].findAll('p', {'class':'search-result__snippets mt2 Sans-13px-black-55% ember-view'})) > 0:
+                a = srch_div[profile].findAll('p', {'class':'search-result__snippets mt2 Sans-13px-black-55% ember-view'})[0].text
+                a = re.sub("\n", "", a)
+                a = re.sub("  ", "", a)
+                quick_summary.append(a)
+                print("quick summary: ", a)
 
-    page_count += 1
+            # if quick result summary is not shown, return 'not available'
+            else:
+                a = "not available"
+                quick_summary.append(a)
+                print("quick summary: ", a)
 
-    # click next to move to next page and repeat the process
-    driver.find_element_by_class_name('next').click()
-    print("hit next")
-    print_sep()
+            # add current location
+            a = srch_div[profile].findAll('p', {'class':'subline-level-2 Sans-13px-black-55% search-result__truncate'})[0].text
+            a = re.sub("\n", "", a)
+            a = re.sub("  ", "", a)
+            location.append(a)
+            print("current location: ", a)
 
-# close the browser window
-driver.quit()
+            # add linkedin profile url
+            sublink = srch_div[profile].findAll('a')[0]['href']
+            a = "www.linkedin.com" + sublink
+            prof_url.append(a)
+            print("linkedin profile link: ", a)
+            print_sep_short()
+
+        page_count += 1
+
+        # click next to move to next page and repeat the process
+        driver.find_element_by_class_name('next').click()
+        print("hit next")
+        print_sep()
+
+except:
+    # combine the separate lists into a pandas dataframe
+    result_set = pd.DataFrame(np.column_stack([name, job_and_company, degree_sep, location, prof_url, quick_summary]),
+                                columns = ["Name", "Job_And_Company", "Degree_Of_Separation", "Location", "Professional_URL", "Quick_Summary"])
 
 # combine the separate lists into a pandas dataframe
 result_set = pd.DataFrame(np.column_stack([name, job_and_company, degree_sep, location, prof_url, quick_summary]),
                             columns = ["Name", "Job_And_Company", "Degree_Of_Separation", "Location", "Professional_URL", "Quick_Summary"])
+
+# close the browser window
+driver.quit()
 
 # export the pandas dataframe into a csv file into current folder location
 result_set.to_csv("linkedin_search_"+search_item+".csv")
