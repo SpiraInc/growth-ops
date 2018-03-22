@@ -34,12 +34,18 @@ After crawling, convert the lists of results into a pandas dataframe and output 
 """
 
 # require libraries
-import time, string, re
+import time, string, re, json, datetime
 import pandas as pd
 import numpy as np
+import pickle
 
 from selenium import webdriver
+from selenium.webdriver.common.by import By
+from selenium.webdriver.support.ui import WebDriverWait
+from selenium.common.exceptions import TimeoutException
+from selenium.webdriver.support import expected_conditions as EC
 from selenium.webdriver.common.keys import Keys
+from selenium.webdriver import FirefoxOptions
 from urllib.request import Request, urlopen
 from bs4 import BeautifulSoup
 
