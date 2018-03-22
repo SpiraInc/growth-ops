@@ -56,10 +56,10 @@ quick_summary = []
 
 
 # enter your linkedin email
-my_email = "XYZXYZ"
+my_email = input("Enter login: ")
 
 # enter your linkedin email
-my_pw = "XYZXYZ"
+my_pw = input("Enter pw: ")
 
 # make sure your webdriver works
 # it's kind of important
