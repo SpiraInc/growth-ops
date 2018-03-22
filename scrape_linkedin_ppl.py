@@ -59,9 +59,12 @@ my_email = input("Enter login: ")
 # enter your linkedin email
 my_pw = input("Enter pw: ")
 
-# make sure your webdriver works
-# it's kind of important
-driver = webdriver.Firefox()
+# run a headless browser option
+opts = FirefoxOptions()
+opts.add_argument("--headless")
+
+# open browser and go to linkedin
+driver = webdriver.Firefox(firefox_options = opts)
 driver.get("http://www.linkedin.com")
 
 # separater after each action for visual purposes
