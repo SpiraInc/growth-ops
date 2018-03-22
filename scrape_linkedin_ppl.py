@@ -43,8 +43,6 @@ from selenium.webdriver.common.keys import Keys
 from urllib.request import Request, urlopen
 from bs4 import BeautifulSoup
 
-search_item = 'XYZXYZ'
-
 # create lists of name, job title, current position, shared connection, degree of separation
 
 name = []
@@ -103,6 +101,8 @@ print_sep()
 driver.find_element_by_id('login-submit').click()
 print("Loggin in")
 print_sep()
+
+search_item = input('What word should be searched: ')
 
 # type into the search box and hit enter on keyboard
 srch_box = driver.find_element_by_tag_name("input")
